@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cyklo databáze</title>
+<meta name="theme-color" content="#176b50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Cyklo"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/images/icon-192.png">
+<link rel="stylesheet" href="assets/css/style.css?v=20261009-3"></head><body>
+
+<header class="app-header">
+  <div class="topline">
+    <div class="brand">
+      <img src="assets/images/icon-192.png" alt="" class="app-logo">
+      <h1>Cyklo databáze</h1>
+    </div>
+    <button type="button" id="addRideButton" class="add-ride-button" aria-label="Přidat novou jízdu" aria-expanded="false" aria-controls="addRidePanel" title="Přidat novou jízdu">+</button>
+  </div>
+
+  <nav class="year-switch" aria-label="Výběr roku">
+    <button type="button" class="year-btn" id="year2026" aria-pressed="false">2026</button>
+    <button type="button" class="year-btn" id="year2025" aria-pressed="false">2025</button>
+  </nav>
+
+  <section class="stats-grid" aria-label="Statistiky vybraného roku">
+    <article class="stat-card"><span class="stat-label">Celkem kilometrů</span><strong id="statKm">—</strong><span class="stat-unit">km</span></article>
+    <article class="stat-card"><span class="stat-label">Převýšení</span><strong id="statElevation">—</strong><span class="stat-unit">m</span></article>
+    <article class="stat-card"><span class="stat-label">Počet jízd</span><strong id="statRides">—</strong><span class="stat-unit">jízd</span></article>
+  </section>
+
+  <details class="panel collapsible">
+    <summary>Filtry a export dat</summary>
+    <div class="filters">
+      <input id="q" placeholder="Hledat v názvu / komentáři…">
+      <label class="small">Od <input id="from" type="date"></label>
+      <label class="small">Do <input id="to" type="date"></label>
+      <input id="minKm" type="number" step="0.1" placeholder="Min. km">
+      <select id="eff"><option value="">Rel. úsilí: vše</option><option value="1">Pouze vyplněné</option></select>
+      <select id="filterDpnk"><option value="">DPNK: vše</option><option value="1">Jen DPNK</option><option value="0">Bez DPNK</option></select>
+      <select id="filterBike"><option value="">Typ: vše</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select>
+    </div>
+    <div class="panel-actions">
+      <button type="button" id="reset">Vymazat filtry</button>
+      <button type="button" id="csv">Export filtrovaných CSV</button>
+      <button type="button" id="allCsv">Export celé databáze</button>
+    </div>
+  </details>
+
+  <details class="panel collapsible">
+    <summary>Synchronizace mezi zařízeními</summary>
+    <div class="sync-panel" aria-label="Synchronizace mezi zařízeními">
+      <strong>☁ Synchronizace</strong>
+      <input id="syncEmail" type="email" autocomplete="username" placeholder="E-mail účtu">
+      <input id="syncPassword" type="password" autocomplete="current-password" placeholder="Heslo">
+      <button id="syncSignIn" class="primary" type="button">Přihlásit</button>
+      <button id="syncSignUp" type="button">Vytvořit účet</button>
+      <button id="syncNow" type="button">Synchronizovat</button>
+      <button id="syncSignOut" type="button" hidden>Odhlásit</button>
+      <span id="syncStatus" class="sync-status">Offline / cloud nenastaven</span>
+    </div>
+  </details>
+  <p class="hint">Statistiky počítají všechny jízdy vybraného roku nezávisle na filtrech. Úpravy se ukládají v tomto prohlížeči.</p>
+</header>
+<main>
+<section class="panel" id="addRidePanel" hidden><h2>Nová jízda</h2><form id="newForm"><div class="form-grid">
+<div class="field"><label for="newDate">Datum *</label><input id="newDate" type="date" required></div><div class="field title-field"><label for="newTitle">Název / komentář *</label><input id="newTitle" required placeholder="Např. Morning Ride #DPNK"></div><div class="field"><label for="newDuration">Čas (hh:mm:ss nebo mm:ss) *</label><input id="newDuration" required placeholder="45:30"></div><div class="field"><label for="newDistance">Vzdálenost (km) *</label><input id="newDistance" required type="number" min="0" step="0.01"></div><div class="field"><label for="newElevation">Nastoupáno (m) *</label><input id="newElevation" required type="number" min="0" step="1" value="0"></div><div class="field"><label for="newEffort">Relativní úsilí</label><input id="newEffort" type="number" min="0" step="1" placeholder="volitelné"></div><div class="field"><label for="newBike">Kolo</label><select id="newBike"><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></div><label class="checkfield"><input id="newDpnk" type="checkbox"> DPNK – cesta do práce</label><button class="primary" type="submit">Přidat záznam</button></div><div class="hint">U nového záznamu se DPNK automaticky předvybere, pokud název obsahuje DPNK nebo ZPNK. Typ kola se předvybere jako rotoped při 0 m nastoupaných.</div></form></section>
+<div class="cards"><div class="card"><div class="small">Počet jízd ve výběru</div><div class="big" id="count"></div></div><div class="card"><div class="small">Vzdálenost ve výběru</div><div class="big" id="km"></div></div><div class="card"><div class="small">Čas ve výběru</div><div class="big" id="time"></div></div><div class="card"><div class="small">Nastoupáno ve výběru</div><div class="big" id="elevsum"></div></div></div>
+<details class="bulk-panel"><summary>Hromadná úprava označených</summary><div class="bulk"><button id="selectVisible">Označit zobrazené</button><button id="unselectAll">Zrušit označení</button><button id="bulkDpnkYes">Nastavit DPNK = ano</button><button id="bulkDpnkNo">Nastavit DPNK = ne</button><label class="small">Kolo <select id="bulkBike"><option value="">Neměnit</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></label><button id="applyBulk">Použít typ kola</button><span class="small" id="selectedCount">Označeno: 0</span></div></details>
+<div class="table-wrap"><table><thead><tr><th class="nosort">✓</th><th data-k="date">Datum ↕</th><th data-k="title">Název / komentář ↕</th><th data-k="duration_seconds">Čas ↕</th><th data-k="distance_km">Vzdálenost ↕</th><th data-k="elevation_m">Nastoupáno ↕</th><th data-k="relative_effort">Rel. úsilí ↕</th><th data-k="dpnk">DPNK? ↕</th><th data-k="bike_type">Kolo ↕</th></tr><tr class="filter-row"><th></th>
+<th><div class="colfilter"><select id="op-date"><option value="contains">obs.</option><option value="eq">=</option><option value="gt">po</option><option value="gte">od</option><option value="lt">před</option><option value="lte">do</option></select><input id="f-date" type="date"></div></th>
+<th><div class="colfilter"><select id="op-title"><option value="contains">obs.</option><option value="eq">=</option><option value="starts">zač.</option><option value="ends">kon.</option><option value="notcontains">≠ obs.</option></select><input id="f-title" placeholder="filtr…"></div></th>
+<th><div class="colfilter"><select id="op-duration"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option></select><input id="f-duration" type="text" placeholder="mm:ss"></div></th>
+<th><div class="colfilter"><select id="op-distance"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option></select><input id="f-distance" type="number" step="0.01" placeholder="km"></div></th>
+<th><div class="colfilter"><select id="op-elevation"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option></select><input id="f-elevation" type="number" step="1" placeholder="m"></div></th>
+<th><div class="colfilter"><select id="op-effort"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option><option value="empty">prázdné</option><option value="filled">vyplněné</option></select><input id="f-effort" type="number" step="1" placeholder="hodnota"></div></th>
+<th><div class="colfilter"><select id="op-dpnk"><option value="eq">=</option></select><select id="f-dpnk"><option value="">vše</option><option value="1">ano</option><option value="0">ne</option></select></div></th>
+<th><div class="colfilter"><select id="op-bike"><option value="eq">=</option></select><select id="f-bike"><option value="">vše</option><option value="PELLS">PELLS</option><option value="Rotoped">Rotoped</option></select></div></th>
+</tr></thead><tbody id="body"></tbody></table></div><p class="footnote">Výchozí označení při načtení databáze: DPNK = ano u komentářů obsahujících „DPNK“ nebo „ZPNK“; typ kola = rotoped u záznamů s 0 m, jinak PELLS. Všechny tyto hodnoty můžeš později ručně opravit.</p>
+</main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/initial-data.js"></script>
+<script src="assets/js/app.js"></script>
+</body></html>
