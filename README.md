@@ -1,2 +1,0 @@
-# cyklo-databaze
-cyklo aktivity
