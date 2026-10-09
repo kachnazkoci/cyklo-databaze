@@ -2,21 +2,77 @@
 <html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cyklo databáze</title>
 <meta name="theme-color" content="#176b50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Cyklo"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">
-<style>
-:root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1c2733;background:#f4f6f8}*{box-sizing:border-box}body{margin:0}header{background:#fff;padding:18px 3%;border-bottom:1px solid #dfe4e8;position:sticky;top:0;z-index:3;box-shadow:0 2px 8px #00000008}.topline{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}h1{font-size:24px;margin:0 0 12px}.year-summary{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.year-box{border:1px solid #d9e2e8;border-radius:10px;padding:8px 12px;min-width:150px;background:#f9fbfc}.year-box strong{display:block;font-size:14px}.year-box span{display:block;font-size:12px;color:#526170;margin-top:3px}.toolbar,.filters,.form-grid,.bulk{display:flex;gap:8px;align-items:center;flex-wrap:wrap}input,select,button{font:inherit;padding:8px 10px;border:1px solid #cbd4dc;border-radius:7px;background:#fff;color:inherit}button{cursor:pointer}button:hover{background:#f0f5f8}.primary{background:#176b50;color:#fff;border-color:#176b50}.primary:hover{background:#12553f}.year-btn.active{background:#dcefe6;border-color:#72b49a;color:#12553f;font-weight:700}.filters{margin-top:12px}.filters input[type=number]{width:115px}.hint{font-size:12px;color:#65717e;margin-top:7px}main{padding:18px 3%}.cards{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:10px;margin-bottom:14px}.card{background:#fff;padding:12px 14px;border:1px solid #e0e5e9;border-radius:10px}.small{font-size:12px;color:#667381}.big{font-size:21px;font-weight:700;margin-top:3px}.panel{background:white;border:1px solid #e0e5e9;border-radius:11px;padding:14px;margin-bottom:14px}.panel h2{font-size:17px;margin:0 0 10px}.form-grid{align-items:end}.field{display:flex;flex-direction:column;gap:4px}.field label{font-size:12px;color:#526170}.field input,.field select{min-width:120px}.field.title-field{flex:1;min-width:210px}.field input[type=checkbox]{min-width:auto;width:18px;height:18px}.checkfield{display:flex;align-items:center;gap:7px;padding:9px 4px}.bulk{margin:0 0 10px}.bulk strong{font-size:13px;margin-right:4px}.table-wrap{overflow:auto;max-height:calc(100vh - 360px);border-radius:9px;border:1px solid #e0e5e9}table{width:100%;border-collapse:collapse;background:#fff;font-size:13px;min-width:1080px}th,td{padding:8px 9px;border-bottom:1px solid #e8ecef;text-align:left;white-space:nowrap}thead th{position:sticky;top:0;background:#eaf0f3;z-index:1;cursor:pointer}thead th.nosort{cursor:default}.filter-row th{top:34px;background:#f7f9fa;cursor:default;padding:5px}.colfilter{display:flex;gap:4px;min-width:0}.colfilter input,.colfilter select{min-width:0;width:100%;padding:5px;font-size:11px}.colfilter select{max-width:70px}.row-check{text-align:center}.row-check input{width:16px;height:16px}.dpnk-check{width:17px;height:17px;vertical-align:middle}.bike-select{padding:5px;font-size:12px;min-width:100px}.muted{color:#7b8792}tbody tr:hover{background:#f5faf8}.empty{text-align:center;padding:25px;color:#64717e}.danger{border-color:#e5b8b8;color:#9d2f2f}.footnote{font-size:12px;color:#667381;margin:10px 0 0}@media(max-width:850px){header{position:static}.cards{grid-template-columns:1fr 1fr}.year-summary{justify-content:flex-start}.table-wrap{max-height:none}.topline{display:block}}
+<link rel="stylesheet" href="./style.css"></head><body>
 
-.sync-panel{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:10px;padding:9px 10px;border:1px solid #d9e2e8;border-radius:9px;background:#f9fbfc}.sync-panel input{max-width:210px}.sync-status{font-size:12px;color:#526170;min-width:150px}.sync-panel .danger{background:#fff}
-@media(max-width:600px){header{padding:12px}h1{font-size:21px}.toolbar button{font-size:13px;padding:7px}.year-summary{display:grid;grid-template-columns:1fr 1fr}.year-box{min-width:0}.sync-panel{align-items:stretch}.sync-panel input{max-width:none;min-width:0;flex:1}.sync-status{width:100%}main{padding:12px}.panel{padding:11px}.field{min-width:calc(50% - 8px)}.field input,.field select{width:100%;min-width:0}.field.title-field{min-width:100%}.form-grid{gap:8px}.table-wrap{max-height:none}}
-</style></head><body>
-<header><div class="topline"><div><h1>🚲 Cyklo databáze</h1><div class="toolbar"><button class="year-btn" id="yearAll">Všechny roky</button><button class="year-btn" id="year2025">Rok 2025</button><button class="year-btn" id="year2026">Rok 2026</button><button id="reset">Vymazat filtry</button><button id="csv">Export filtrovaných CSV</button><button id="allCsv">Export celé databáze</button></div></div><div class="year-summary"><div class="year-box"><strong>2025 – celý rok v databázi</strong><span id="summary2025"></span></div><div class="year-box"><strong>2026 – celý rok v databázi</strong><span id="summary2026"></span></div></div></div>
-<div class="sync-panel" aria-label="Synchronizace mezi zařízeními">
-<strong>☁ Synchronizace</strong><input id="syncEmail" type="email" autocomplete="username" placeholder="E-mail účtu"><input id="syncPassword" type="password" autocomplete="current-password" placeholder="Heslo"><button id="syncSignIn" class="primary" type="button">Přihlásit</button><button id="syncSignUp" type="button">Vytvořit účet</button><button id="syncNow" type="button">Synchronizovat</button><button id="syncSignOut" type="button" hidden>Odhlásit</button><span id="syncStatus" class="sync-status">Offline / cloud nenastaven</span>
-</div><div class="filters"><input id="q" placeholder="Hledat v názvu / komentáři…"><label class="small">Od <input id="from" type="date"></label><label class="small">Do <input id="to" type="date"></label><input id="minKm" type="number" step="0.1" placeholder="Min. km"><select id="eff"><option value="">Rel. úsilí: vše</option><option value="1">Pouze vyplněné</option></select><select id="filterDpnk"><option value="">DPNK: vše</option><option value="1">Jen DPNK</option><option value="0">Bez DPNK</option></select><select id="filterBike"><option value="">Typ: vše</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></div><div class="hint">Rokové souhrny vpravo počítají všechny záznamy daného roku, nezávisle na aktuálních filtrech. Úpravy se ukládají v tomto prohlížeči.</div></header>
+<header class="app-header">
+  <div class="topline">
+    <div class="brand">
+      <img src="./icon-192.png" alt="" class="app-logo">
+      <h1>Cyklo databáze</h1>
+    </div>
+    <button type="button" id="addRideButton" class="add-ride-button"
+      aria-label="Přidat novou jízdu" aria-expanded="false"
+      aria-controls="newFormPanel" title="Přidat novou jízdu">+</button>
+  </div>
+
+  <nav class="year-switch" aria-label="Výběr roku">
+    <button type="button" class="year-btn" id="year2026" aria-pressed="true">2026</button>
+    <button type="button" class="year-btn" id="year2025" aria-pressed="false">2025</button>
+  </nav>
+
+  <section class="stats-grid" aria-label="Statistiky vybraného roku">
+    <article class="stat-card">
+      <span class="stat-label">Celkem kilometrů</span>
+      <strong id="statKm">—</strong><span class="stat-unit">km</span>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Převýšení</span>
+      <strong id="statElevation">—</strong><span class="stat-unit">m</span>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Počet jízd</span>
+      <strong id="statRides">—</strong><span class="stat-unit">jízd</span>
+    </article>
+  </section>
+
+  <details class="panel header-panel">
+    <summary>Filtry a export dat</summary>
+    <div class="filters">
+      <input id="q" placeholder="Hledat v názvu / komentáři…" aria-label="Hledat v názvu nebo komentáři">
+      <label class="small">Od <input id="from" type="date"></label>
+      <label class="small">Do <input id="to" type="date"></label>
+      <input id="minKm" type="number" step="0.1" placeholder="Min. km" aria-label="Minimální vzdálenost v kilometrech">
+      <select id="eff"><option value="">Rel. úsilí: vše</option><option value="1">Pouze vyplněné</option></select>
+      <select id="filterDpnk"><option value="">DPNK: vše</option><option value="1">Jen DPNK</option><option value="0">Bez DPNK</option></select>
+      <select id="filterBike"><option value="">Typ: vše</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select>
+    </div>
+    <div class="panel-actions">
+      <button type="button" id="reset">Vymazat filtry</button>
+      <button type="button" id="csv">Export filtrovaných CSV</button>
+      <button type="button" id="allCsv">Export celé databáze</button>
+    </div>
+  </details>
+
+  <details class="panel header-panel">
+    <summary>Synchronizace mezi zařízeními</summary>
+    <div class="sync-panel" aria-label="Synchronizace mezi zařízeními">
+      <strong>☁ Synchronizace</strong>
+      <input id="syncEmail" type="email" autocomplete="username" placeholder="E-mail účtu">
+      <input id="syncPassword" type="password" autocomplete="current-password" placeholder="Heslo">
+      <button id="syncSignIn" class="primary" type="button">Přihlásit</button>
+      <button id="syncSignUp" type="button">Vytvořit účet</button>
+      <button id="syncNow" type="button">Synchronizovat</button>
+      <button id="syncSignOut" type="button" hidden>Odhlásit</button>
+      <span id="syncStatus" class="sync-status">Offline / cloud nenastaven</span>
+    </div>
+  </details>
+  <p class="hint">Statistiky zahrnují všechny jízdy vybraného roku bez ohledu na aktivní filtry.</p>
+</header>
 <main>
-<section class="panel"><h2>＋ Přidat novou jízdu</h2><form id="newForm"><div class="form-grid">
+<section class="panel new-ride-panel" id="newFormPanel" hidden><h2>＋ Přidat novou jízdu</h2><form id="newForm"><div class="form-grid">
 <div class="field"><label for="newDate">Datum *</label><input id="newDate" type="date" required></div><div class="field title-field"><label for="newTitle">Název / komentář *</label><input id="newTitle" required placeholder="Např. Morning Ride #DPNK"></div><div class="field"><label for="newDuration">Čas (hh:mm:ss nebo mm:ss) *</label><input id="newDuration" required placeholder="45:30"></div><div class="field"><label for="newDistance">Vzdálenost (km) *</label><input id="newDistance" required type="number" min="0" step="0.01"></div><div class="field"><label for="newElevation">Nastoupáno (m) *</label><input id="newElevation" required type="number" min="0" step="1" value="0"></div><div class="field"><label for="newEffort">Relativní úsilí</label><input id="newEffort" type="number" min="0" step="1" placeholder="volitelné"></div><div class="field"><label for="newBike">Kolo</label><select id="newBike"><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></div><label class="checkfield"><input id="newDpnk" type="checkbox"> DPNK – cesta do práce</label><button class="primary" type="submit">Přidat záznam</button></div><div class="hint">U nového záznamu se DPNK automaticky předvybere, pokud název obsahuje DPNK nebo ZPNK. Typ kola se předvybere jako rotoped při 0 m nastoupaných.</div></form></section>
 <div class="cards"><div class="card"><div class="small">Počet jízd ve výběru</div><div class="big" id="count"></div></div><div class="card"><div class="small">Vzdálenost ve výběru</div><div class="big" id="km"></div></div><div class="card"><div class="small">Čas ve výběru</div><div class="big" id="time"></div></div><div class="card"><div class="small">Nastoupáno ve výběru</div><div class="big" id="elevsum"></div></div></div>
-<div class="bulk"><strong>Hromadná úprava označených:</strong><button id="selectVisible">Označit zobrazené</button><button id="unselectAll">Zrušit označení</button><button id="bulkDpnkYes">Nastavit DPNK = ano</button><button id="bulkDpnkNo">Nastavit DPNK = ne</button><label class="small">Kolo <select id="bulkBike"><option value="">Neměnit</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></label><button id="applyBulk">Použít typ kola</button><span class="small" id="selectedCount">Označeno: 0</span></div>
+<details class="panel bulk-panel"><summary>Hromadná úprava jízd</summary><div class="bulk"><strong>Hromadná úprava označených:</strong><button id="selectVisible">Označit zobrazené</button><button id="unselectAll">Zrušit označení</button><button id="bulkDpnkYes">Nastavit DPNK = ano</button><button id="bulkDpnkNo">Nastavit DPNK = ne</button><label class="small">Kolo <select id="bulkBike"><option value="">Neměnit</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></label><button id="applyBulk">Použít typ kola</button><span class="small" id="selectedCount">Označeno: 0</span></div></details>
 <div class="table-wrap"><table><thead><tr><th class="nosort">✓</th><th data-k="date">Datum ↕</th><th data-k="title">Název / komentář ↕</th><th data-k="duration_seconds">Čas ↕</th><th data-k="distance_km">Vzdálenost ↕</th><th data-k="elevation_m">Nastoupáno ↕</th><th data-k="relative_effort">Rel. úsilí ↕</th><th data-k="dpnk">DPNK? ↕</th><th data-k="bike_type">Kolo ↕</th></tr><tr class="filter-row"><th></th>
 <th><div class="colfilter"><select id="op-date"><option value="contains">obs.</option><option value="eq">=</option><option value="gt">po</option><option value="gte">od</option><option value="lt">před</option><option value="lte">do</option></select><input id="f-date" type="date"></div></th>
 <th><div class="colfilter"><select id="op-title"><option value="contains">obs.</option><option value="eq">=</option><option value="starts">zač.</option><option value="ends">kon.</option><option value="notcontains">≠ obs.</option></select><input id="f-title" placeholder="filtr…"></div></th>
@@ -33,7 +89,7 @@ const INITIAL=[{"id":1,"date":"2026-01-15","title":"Evening Ride","duration":"1:
 const STORAGE_KEY='cykloDatabaze_v3';
 function enrich(x){const t=String(x.title||'').toUpperCase();return {...x,dpnk:x.dpnk!==undefined?!!x.dpnk:(t.includes('DPNK')||t.includes('ZPNK')),bike_type:x.bike_type||(Number(x.elevation_m)===0?'Rotoped':'PELLS')};}
 let DATA;try{const saved=localStorage.getItem(STORAGE_KEY);DATA=saved?JSON.parse(saved).map(enrich):INITIAL.map(enrich)}catch(e){DATA=INITIAL.map(enrich)}
-let sortKey='date',sortDir=-1,current=[],activeYear='',selected=new Set();const $=id=>document.getElementById(id);
+let sortKey='date',sortDir=-1,current=[],activeYear='2026',selected=new Set();const $=id=>document.getElementById(id);
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(DATA));scheduleCloudSave()}catch(e){alert('Nepodařilo se uložit změny do prohlížeče. Doporučuji exportovat databázi do CSV.')}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function fmtTime(s){s=Number(s)||0;let h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=s%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`:`${m}:${String(sec).padStart(2,'0')}`}
@@ -50,14 +106,24 @@ function applyColumnFilters(x){
  return true;
 }
 function matches(x){let q=$('q').value.trim().toLowerCase(),fr=$('from').value,to=$('to').value,min=parseFloat($('minKm').value||0),eff=$('eff').value,fd=$('filterDpnk').value,fb=$('filterBike').value;return (!activeYear||x.date.startsWith(activeYear))&&(!q||String(x.title||'').toLowerCase().includes(q))&&(!fr||x.date>=fr)&&(!to||x.date<=to)&&Number(x.distance_km)>=min&&(!eff||x.relative_effort!==null&&x.relative_effort!==undefined)&&(!fd||String(Number(!!x.dpnk))===fd)&&(!fb||x.bike_type===fb)&&applyColumnFilters(x)}
-function yearSummary(year){let a=DATA.filter(x=>x.date.startsWith(year));return `${a.reduce((s,x)=>s+Number(x.distance_km||0),0).toLocaleString('cs-CZ',{maximumFractionDigits:2})} km · ${a.reduce((s,x)=>s+Number(x.elevation_m||0),0).toLocaleString('cs-CZ')} m · ${a.length} jízd`}
-function refreshYearSummary(){$('summary2025').textContent=yearSummary('2025');$('summary2026').textContent=yearSummary('2026');}
-function updateYearButtons(){for(const [id,yr] of [['yearAll',''],['year2025','2025'],['year2026','2026']])$(id).classList.toggle('active',activeYear===yr)}
+function refreshYearSummary(){
+ const a=DATA.filter(x=>String(x.date||'').startsWith(activeYear));
+ $('statKm').textContent=a.reduce((sum,x)=>sum+Number(x.distance_km||0),0).toLocaleString('cs-CZ',{maximumFractionDigits:2});
+ $('statElevation').textContent=a.reduce((sum,x)=>sum+Number(x.elevation_m||0),0).toLocaleString('cs-CZ');
+ $('statRides').textContent=a.length.toLocaleString('cs-CZ');
+}
+function updateYearButtons(){
+ for(const [id,yr] of [['year2025','2025'],['year2026','2026']]){
+  const button=$(id), active=activeYear===yr;
+  button.classList.toggle('active',active);
+  button.setAttribute('aria-pressed',String(active));
+ }
+}
 function render(){current=DATA.filter(matches);current.sort((a,b)=>{let A=a[sortKey],B=b[sortKey];if(sortKey==='dpnk'){A=Number(!!A);B=Number(!!B)}if(A===null||A===undefined)A=-Infinity;if(B===null||B===undefined)B=-Infinity;return (A>B?1:A<B?-1:0)*sortDir});
  $('body').innerHTML=current.map(x=>`<tr><td class="row-check"><input type="checkbox" data-select="${x.id}" ${selected.has(String(x.id))||selected.has(x.id)?'checked':''} aria-label="Označit záznam"></td><td>${esc(x.date.split('-').reverse().join('. '))}</td><td>${esc(x.title)}</td><td>${esc(x.duration)}</td><td>${Number(x.distance_km).toLocaleString('cs-CZ',{minimumFractionDigits:2,maximumFractionDigits:2})} km</td><td>${Number(x.elevation_m)||0} m</td><td>${x.relative_effort??''}</td><td class="row-check"><input class="dpnk-check" type="checkbox" data-dpnk="${x.id}" ${x.dpnk?'checked':''} aria-label="Cesta do práce DPNK"></td><td><select class="bike-select" data-bike="${x.id}"><option value="PELLS" ${x.bike_type==='PELLS'?'selected':''}>PELLS</option><option value="Rotoped" ${x.bike_type==='Rotoped'?'selected':''}>Rotoped</option></select></td></tr>`).join('')||'<tr><td colspan="9" class="empty">Žádné záznamy neodpovídají filtrům.</td></tr>';
  $('count').textContent=current.length;$('km').textContent=current.reduce((s,x)=>s+Number(x.distance_km||0),0).toLocaleString('cs-CZ',{maximumFractionDigits:2})+' km';$('time').textContent=fmtLongTime(current.reduce((s,x)=>s+Number(x.duration_seconds||0),0));$('elevsum').textContent=current.reduce((s,x)=>s+Number(x.elevation_m||0),0).toLocaleString('cs-CZ')+' m';$('selectedCount').textContent='Označeno: '+selected.size;refreshYearSummary();updateYearButtons();}
 function setYear(y){activeYear=y;$('from').value='';$('to').value='';render()}
-$('yearAll').onclick=()=>setYear('');$('year2025').onclick=()=>setYear('2025');$('year2026').onclick=()=>setYear('2026');
+$('year2025').onclick=()=>setYear('2025');$('year2026').onclick=()=>setYear('2026');
 ['q','from','to','minKm','eff','filterDpnk','filterBike','f-title','op-title','f-date','op-date','f-duration','op-duration','f-distance','op-distance','f-elevation','op-elevation','f-effort','op-effort','f-dpnk','f-bike'].forEach(id=>$(id).addEventListener('input',render));['eff','filterDpnk','filterBike','op-title','op-date','op-duration','op-distance','op-elevation','op-effort','f-dpnk','f-bike'].forEach(id=>$(id).addEventListener('change',render));
 $('reset').onclick=()=>{['q','from','to','minKm','f-title','f-date','f-duration','f-distance','f-elevation','f-effort'].forEach(id=>$(id).value='');['eff','filterDpnk','filterBike','op-title','op-date','op-duration','op-distance','op-elevation','op-effort','f-dpnk','f-bike'].forEach(id=>$(id).selectedIndex=0);activeYear='';render()};
 document.querySelector('thead').addEventListener('click',e=>{let th=e.target.closest('th[data-k]');if(!th)return;let k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=1}render()});
@@ -67,7 +133,16 @@ $('bulkDpnkYes').onclick=()=>bulkUpdate(x=>x.dpnk=true);$('bulkDpnkNo').onclick=
 function parseDuration(v){let s=timeToSeconds(v);if(s===null||s<0)throw Error('Čas zadej například 45:30 nebo 1:05:30.');return s}
 $('newElevation').addEventListener('input',()=>{$('newBike').value=Number($('newElevation').value)===0?'Rotoped':'PELLS'});
 $('newTitle').addEventListener('input',()=>{let t=$('newTitle').value.toUpperCase();$('newDpnk').checked=t.includes('DPNK')||t.includes('ZPNK')});
-$('newForm').addEventListener('submit',e=>{e.preventDefault();try{let date=$('newDate').value,title=$('newTitle').value.trim(),durationSeconds=parseDuration($('newDuration').value),distance=Number($('newDistance').value),elevation=Number($('newElevation').value),effort=$('newEffort').value===''?null:Number($('newEffort').value);if(!date||!title||!Number.isFinite(distance)||distance<0||!Number.isFinite(elevation)||elevation<0)throw Error('Zkontroluj datum, název, vzdálenost a nastoupané metry.');let id=DATA.reduce((m,x)=>Math.max(m,Number(x.id)||0),0)+1;let row={id,date,title,duration:fmtTime(durationSeconds),duration_seconds:durationSeconds,distance_km:distance,elevation_m:elevation,relative_effort:effort,dpnk:$('newDpnk').checked,bike_type:$('newBike').value};DATA.push(row);save();$('newForm').reset();$('newElevation').value='0';$('newBike').value='Rotoped';$('newDpnk').checked=false;activeYear=date.slice(0,4);render();}catch(err){alert(err.message||'Záznam se nepodařilo přidat.')}});
+const addRideButton=$('addRideButton'), newFormPanel=$('newFormPanel');
+addRideButton.addEventListener('click',()=>{
+ const willOpen=newFormPanel.hidden;
+ newFormPanel.hidden=!willOpen;
+ addRideButton.setAttribute('aria-expanded',String(willOpen));
+ addRideButton.textContent=willOpen?'×':'+';
+ addRideButton.setAttribute('aria-label',willOpen?'Zavřít formulář':'Přidat novou jízdu');
+ if(willOpen){newFormPanel.scrollIntoView({behavior:'smooth',block:'start'});$('newDate').focus({preventScroll:true});}
+});
+$('newForm').addEventListener('submit',e=>{e.preventDefault();try{let date=$('newDate').value,title=$('newTitle').value.trim(),durationSeconds=parseDuration($('newDuration').value),distance=Number($('newDistance').value),elevation=Number($('newElevation').value),effort=$('newEffort').value===''?null:Number($('newEffort').value);if(!date||!title||!Number.isFinite(distance)||distance<0||!Number.isFinite(elevation)||elevation<0)throw Error('Zkontroluj datum, název, vzdálenost a nastoupané metry.');let id=DATA.reduce((m,x)=>Math.max(m,Number(x.id)||0),0)+1;let row={id,date,title,duration:fmtTime(durationSeconds),duration_seconds:durationSeconds,distance_km:distance,elevation_m:elevation,relative_effort:effort,dpnk:$('newDpnk').checked,bike_type:$('newBike').value};DATA.push(row);save();$('newForm').reset();$('newElevation').value='0';$('newBike').value='Rotoped';$('newDpnk').checked=false;activeYear=date.slice(0,4);newFormPanel.hidden=true;addRideButton.setAttribute('aria-expanded','false');addRideButton.textContent='+';addRideButton.setAttribute('aria-label','Přidat novou jízdu');render();}catch(err){alert(err.message||'Záznam se nepodařilo přidat.')}});
 function exportCSV(rows,filename){let head=['id','date','title','duration','duration_seconds','distance_km','elevation_m','relative_effort','dpnk','bike_type'];let escv=v=>'"'+String(v??'').replaceAll('"','""')+'"';let txt='\ufeff'+head.join(';')+'\r\n'+rows.map(r=>head.map(k=>escv(k==='dpnk'?(r.dpnk?1:0):r[k])).join(';')).join('\r\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv;charset=utf-8'}));a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 $('csv').onclick=()=>exportCSV(current,'filtrovane_aktivity.csv');$('allCsv').onclick=()=>exportCSV(DATA,'cyklo_databaze_zaloha.csv');
 
