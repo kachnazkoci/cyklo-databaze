@@ -1,7 +1,7 @@
-{
-  "name": "Cyklo databáze",
+﻿{
+  "name": "Cyklo databĂˇze",
   "short_name": "Cyklo",
-  "description": "Osobní databáze cyklistických jízd",
+  "description": "OsobnĂ­ databĂˇze cyklistickĂ˝ch jĂ­zd",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -9,14 +9,15 @@
   "theme_color": "#176b50",
   "icons": [
     {
-      "src": "assets/images/icon-192.png",
+      "src": "ASSETS/images/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "assets/images/icon-512.png",
+      "src": "ASSETS/images/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
 }
+

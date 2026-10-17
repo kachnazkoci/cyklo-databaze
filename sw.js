@@ -1,9 +1,9 @@
-const CACHE = 'cyklo-v20261017-viz2-year-gold';
+﻿const CACHE = 'cyklo-v20261017-viz2-year-gold';
 const FILES = [
   './', './index.html', './manifest.webmanifest',
-  './assets/css/style.css', './assets/js/config.js', './assets/js/initial-data.js',
-  './assets/js/app.js', './assets/images/icon-192.png', './assets/images/icon-512.png',
-  './data/cyklo_aktivity_2025_2026.csv', './data/strava_activities_2025_2026.csv'
+  './ASSETS/css/style.css', './ASSETS/js/config.js', './ASSETS/js/initial-data.js',
+  './ASSETS/js/app.js', './ASSETS/images/icon-192.png', './ASSETS/images/icon-512.png',
+  './DATA/cyklo_aktivity_2025_2026.csv', './DATA/strava_activities_2025_2026.csv'
 ];
 
 self.addEventListener('install', event => {
@@ -33,14 +33,14 @@ self.addEventListener('fetch', event => {
       fetch(event.request, { cache: 'no-store' }).then(response => {
         if (response.ok) {
           const copy = response.clone();
-          const cacheKey = isStravaCsv ? './data/strava_activities_2025_2026.csv' : event.request;
+          const cacheKey = isStravaCsv ? './DATA/strava_activities_2025_2026.csv' : event.request;
           event.waitUntil(
             caches.open(CACHE).then(cache => cache.put(cacheKey, copy))
               .catch(error => console.warn('Cache update failed:', error))
           );
         }
         return response;
-      }).catch(() => caches.match(isStravaCsv ? './data/strava_activities_2025_2026.csv' : event.request)
+      }).catch(() => caches.match(isStravaCsv ? './DATA/strava_activities_2025_2026.csv' : event.request)
         .then(cached => cached || (isAppShell ? caches.match('./index.html') : undefined))
       )
     );
@@ -63,3 +63,4 @@ self.addEventListener('fetch', event => {
     })
   );
 });
+
