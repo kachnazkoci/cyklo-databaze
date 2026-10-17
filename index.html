@@ -2,7 +2,7 @@
 <html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cyklo databáze</title>
 <meta name="theme-color" content="#176b50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Cyklo"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/images/icon-192.png">
-<link rel="stylesheet" href="assets/css/style.css?v=20261009-3"></head><body>
+<meta name="mobile-web-app-capable" content="yes"><link rel="stylesheet" href="assets/css/style.css?v=20261017-9"></head><body>
 
 <header class="app-header">
   <div class="topline">
@@ -10,70 +10,95 @@
       <img src="assets/images/icon-192.png" alt="" class="app-logo">
       <h1>Cyklo databáze</h1>
     </div>
-    <button type="button" id="addRideButton" class="add-ride-button" aria-label="Přidat novou jízdu" aria-expanded="false" aria-controls="addRidePanel" title="Přidat novou jízdu">+</button>
-  </div>
 
-  <nav class="year-switch" aria-label="Výběr roku">
-    <button type="button" class="year-btn" id="year2026" aria-pressed="false">2026</button>
-    <button type="button" class="year-btn" id="year2025" aria-pressed="false">2025</button>
-  </nav>
-
-  <section class="stats-grid" aria-label="Statistiky vybraného roku">
-    <article class="stat-card"><span class="stat-label">Celkem kilometrů</span><strong id="statKm">—</strong><span class="stat-unit">km</span></article>
-    <article class="stat-card"><span class="stat-label">Převýšení</span><strong id="statElevation">—</strong><span class="stat-unit">m</span></article>
+  <section class="stats-grid" aria-label="Souhrn aktuálního výběru">
+    <article class="stat-card stat-pells"><span class="stat-label">PELLS · km</span><strong id="statPellsKm">—</strong><span class="stat-unit">venkovní kolo</span></article>
+    <article class="stat-card stat-trainer"><span class="stat-label">Rotoped · km</span><strong id="statRotopedKm">—</strong><span class="stat-unit">trenažér</span></article>
+    <article class="stat-card"><span class="stat-label">Nastoupáno</span><strong id="statElevation">—</strong><span class="stat-unit">m</span></article>
     <article class="stat-card"><span class="stat-label">Počet jízd</span><strong id="statRides">—</strong><span class="stat-unit">jízd</span></article>
   </section>
+    <div class="header-actions">
+      <div class="action-wrap add-action-wrap"><button type="button" id="addRideButton" class="add-ride-button" aria-haspopup="menu" aria-label="Přidat jízdu nebo importovat CSV" aria-expanded="false" aria-controls="addRideMenu" title="Přidat jízdu nebo importovat CSV">+</button><div id="addRideMenu" class="add-menu" role="menu" hidden><button type="button" id="addManualOption" role="menuitem">＋ Přidat jednotlivou jízdu</button><button type="button" id="addImportOption" role="menuitem">⬆ Importovat jízdy ze Stravy (CSV)</button><button type="button" id="closeAddMenu" class="menu-close" aria-label="Zavřít nabídku">× Zavřít</button></div></div>
+      <div class="action-wrap"><button type="button" id="visualizeButton" class="icon-button" aria-label="Vizualizace jízd" title="Vizualizace jízd"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11h4v9M10 20V4h4v16M16 20v-7h4v7"></path></svg></button>
+      <button type="button" id="exportToggleButton" class="icon-button" aria-label="Export dat" title="Export dat" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 17v4h14v-4"></path></svg></button></div>
+      <button type="button" id="syncToggleButton" class="icon-button" aria-label="Synchronizace mezi zařízeními" aria-expanded="false" aria-controls="syncPanel" title="Synchronizace mezi zařízeními"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16.5a4 4 0 0 1 4-4 5.5 5.5 0 0 1 10.6-1.6A3.8 3.8 0 1 1 18 18H7a4 4 0 0 1-4-1.5Z"></path><path d="M8 14.5h8M12 11v7"></path></svg></button>
+      <button type="button" id="profileButton" class="profile-button" aria-label="Můj profil a roční cíle" aria-expanded="false" aria-controls="profilePanel" title="Můj profil a roční cíle"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg></button>
+    </div>
+  </div>
 
-  <details class="panel collapsible">
-    <summary>Filtry a export dat</summary>
+
+  <section class="panel filters-panel" id="filtersPanel" aria-label="Filtry jízd">
     <div class="filters">
-      <input id="q" placeholder="Hledat v názvu / komentáři…">
-      <label class="small">Od <input id="from" type="date"></label>
-      <label class="small">Do <input id="to" type="date"></label>
-      <input id="minKm" type="number" step="0.1" placeholder="Min. km">
-      <select id="eff"><option value="">Rel. úsilí: vše</option><option value="1">Pouze vyplněné</option></select>
-      <select id="filterDpnk"><option value="">DPNK: vše</option><option value="1">Jen DPNK</option><option value="0">Bez DPNK</option></select>
-      <select id="filterBike"><option value="">Typ: vše</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select>
-    </div>
-    <div class="panel-actions">
+      <div class="year-presets" aria-label="Přednastavení období"><span class="small">Období:</span><button type="button" class="year-btn" id="year2025">Celý rok 2025</button><button type="button" class="year-btn" id="year2026">Celý rok 2026</button><button type="button" id="allDates">Vše</button></div>
+      <input id="q" placeholder="Hledat v názvu / komentáři…" aria-label="Hledat v názvu nebo komentáři">
+      <label class="small">Datum od <input id="from" type="date" aria-label="Datum od"></label>
+      <label class="small">Datum do <input id="to" type="date" aria-label="Datum do"></label>
+      <input id="minKm" type="number" step="0.1" placeholder="Min. km" aria-label="Minimální vzdálenost v km">
+      <select id="eff" aria-label="Relativní úsilí"><option value="">Rel. úsilí: vše</option><option value="1">Pouze vyplněné</option></select>
+      <select id="filterDpnk" aria-label="Filtr DPNK"><option value="">DPNK: vše</option><option value="1">Jen DPNK</option><option value="0">Bez DPNK</option></select>
+      <select id="filterBike" aria-label="Typ kola"><option value="">Typ: vše</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select>
       <button type="button" id="reset">Vymazat filtry</button>
-      <button type="button" id="csv">Export filtrovaných CSV</button>
-      <button type="button" id="allCsv">Export celé databáze</button>
     </div>
-  </details>
-
-  <details class="panel collapsible">
+  </section>
+  <section class="panel export-menu" id="exportMenu" hidden aria-label="Export dat">
+    <button type="button" id="csv">Exportovat filtrované jízdy (CSV)</button>
+    <button type="button" id="allCsv">Exportovat celou databázi (CSV)</button>
+  </section>
+  <details class="panel collapsible sync-collapsible" id="syncPanel">
     <summary>Synchronizace mezi zařízeními</summary>
     <div class="sync-panel" aria-label="Synchronizace mezi zařízeními">
       <strong>☁ Synchronizace</strong>
       <input id="syncEmail" type="email" autocomplete="username" placeholder="E-mail účtu">
-      <input id="syncPassword" type="password" autocomplete="current-password" placeholder="Heslo">
-      <button id="syncSignIn" class="primary" type="button">Přihlásit</button>
-      <button id="syncSignUp" type="button">Vytvořit účet</button>
+      <button id="syncSendCode" class="primary" type="button">Poslat přihlašovací kód</button>
+      <input id="syncCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6místný kód z e-mailu" hidden>
+      <button id="syncVerifyCode" type="button" hidden>Ověřit kód</button>
       <button id="syncNow" type="button">Synchronizovat</button>
       <button id="syncSignOut" type="button" hidden>Odhlásit</button>
       <span id="syncStatus" class="sync-status">Offline / cloud nenastaven</span>
     </div>
   </details>
-  <p class="hint">Statistiky počítají všechny jízdy vybraného roku nezávisle na filtrech. Úpravy se ukládají v tomto prohlížeči.</p>
+  <p class="hint">Souhrn nahoře odpovídá aktuálnímu výběru včetně období a typu kola. Roky 2025/2026 přednastaví datum Od/Do; můžeš je upravit. Úpravy se ukládají v tomto prohlížeči.</p>
 </header>
 <main>
-<section class="panel" id="addRidePanel" hidden><h2>Nová jízda</h2><form id="newForm"><div class="form-grid">
-<div class="field"><label for="newDate">Datum *</label><input id="newDate" type="date" required></div><div class="field title-field"><label for="newTitle">Název / komentář *</label><input id="newTitle" required placeholder="Např. Morning Ride #DPNK"></div><div class="field"><label for="newDuration">Čas (hh:mm:ss nebo mm:ss) *</label><input id="newDuration" required placeholder="45:30"></div><div class="field"><label for="newDistance">Vzdálenost (km) *</label><input id="newDistance" required type="number" min="0" step="0.01"></div><div class="field"><label for="newElevation">Nastoupáno (m) *</label><input id="newElevation" required type="number" min="0" step="1" value="0"></div><div class="field"><label for="newEffort">Relativní úsilí</label><input id="newEffort" type="number" min="0" step="1" placeholder="volitelné"></div><div class="field"><label for="newBike">Kolo</label><select id="newBike"><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></div><label class="checkfield"><input id="newDpnk" type="checkbox"> DPNK – cesta do práce</label><button class="primary" type="submit">Přidat záznam</button></div><div class="hint">U nového záznamu se DPNK automaticky předvybere, pokud název obsahuje DPNK nebo ZPNK. Typ kola se předvybere jako rotoped při 0 m nastoupaných.</div></form></section>
-<div class="cards"><div class="card"><div class="small">Počet jízd ve výběru</div><div class="big" id="count"></div></div><div class="card"><div class="small">Vzdálenost ve výběru</div><div class="big" id="km"></div></div><div class="card"><div class="small">Čas ve výběru</div><div class="big" id="time"></div></div><div class="card"><div class="small">Nastoupáno ve výběru</div><div class="big" id="elevsum"></div></div></div>
-<details class="bulk-panel"><summary>Hromadná úprava označených</summary><div class="bulk"><button id="selectVisible">Označit zobrazené</button><button id="unselectAll">Zrušit označení</button><button id="bulkDpnkYes">Nastavit DPNK = ano</button><button id="bulkDpnkNo">Nastavit DPNK = ne</button><label class="small">Kolo <select id="bulkBike"><option value="">Neměnit</option><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></label><button id="applyBulk">Použít typ kola</button><span class="small" id="selectedCount">Označeno: 0</span></div></details>
-<div class="table-wrap"><table><thead><tr><th class="nosort">✓</th><th data-k="date">Datum ↕</th><th data-k="title">Název / komentář ↕</th><th data-k="duration_seconds">Čas ↕</th><th data-k="distance_km">Vzdálenost ↕</th><th data-k="elevation_m">Nastoupáno ↕</th><th data-k="relative_effort">Rel. úsilí ↕</th><th data-k="dpnk">DPNK? ↕</th><th data-k="bike_type">Kolo ↕</th></tr><tr class="filter-row"><th></th>
-<th><div class="colfilter"><select id="op-date"><option value="contains">obs.</option><option value="eq">=</option><option value="gt">po</option><option value="gte">od</option><option value="lt">před</option><option value="lte">do</option></select><input id="f-date" type="date"></div></th>
-<th><div class="colfilter"><select id="op-title"><option value="contains">obs.</option><option value="eq">=</option><option value="starts">zač.</option><option value="ends">kon.</option><option value="notcontains">≠ obs.</option></select><input id="f-title" placeholder="filtr…"></div></th>
-<th><div class="colfilter"><select id="op-duration"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option></select><input id="f-duration" type="text" placeholder="mm:ss"></div></th>
-<th><div class="colfilter"><select id="op-distance"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option></select><input id="f-distance" type="number" step="0.01" placeholder="km"></div></th>
-<th><div class="colfilter"><select id="op-elevation"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option></select><input id="f-elevation" type="number" step="1" placeholder="m"></div></th>
-<th><div class="colfilter"><select id="op-effort"><option value="gt">&gt;</option><option value="gte">≥</option><option value="eq">=</option><option value="lte">≤</option><option value="lt">&lt;</option><option value="empty">prázdné</option><option value="filled">vyplněné</option></select><input id="f-effort" type="number" step="1" placeholder="hodnota"></div></th>
-<th><div class="colfilter"><select id="op-dpnk"><option value="eq">=</option></select><select id="f-dpnk"><option value="">vše</option><option value="1">ano</option><option value="0">ne</option></select></div></th>
-<th><div class="colfilter"><select id="op-bike"><option value="eq">=</option></select><select id="f-bike"><option value="">vše</option><option value="PELLS">PELLS</option><option value="Rotoped">Rotoped</option></select></div></th>
-</tr></thead><tbody id="body"></tbody></table></div><p class="footnote">Výchozí označení při načtení databáze: DPNK = ano u komentářů obsahujících „DPNK“ nebo „ZPNK“; typ kola = rotoped u záznamů s 0 m, jinak PELLS. Všechny tyto hodnoty můžeš později ručně opravit.</p>
-</main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<section class="panel profile-panel" id="profilePanel" hidden>
+  <div class="profile-heading"><div><h2>Můj profil · roční cíle</h2><p class="hint">Nastav si cíle pro vybraný rok. Splněné hodnoty se průběžně počítají z jízd v databázi.</p></div><span class="profile-year" id="profileYear">2026</span></div>
+  <form id="goalsForm"><div class="goal-inputs">
+    <label class="field"><span>Kilometry na kole PELLS (km)</span><input id="goalPellsKm" type="number" min="0" step="1" placeholder="Např. 3000"></label>
+    <label class="field"><span>Kilometry na rotopedu (km)</span><input id="goalRotopedKm" type="number" min="0" step="1" placeholder="Např. 2000"></label>
+    <label class="field"><span>Nastoupané metry za rok (m)</span><input id="goalElevation" type="number" min="0" step="100" placeholder="Např. 30000"></label>
+    <label class="field"><span>Počet DPNK jízd</span><input id="goalDpnk" type="number" min="0" step="1" placeholder="Např. 200"></label>
+  </div><div class="goal-progress-grid">
+    <article class="goal-progress"><div class="goal-progress-top"><span>Kilometry · PELLS</span><strong id="donePellsKm">0 / 0 km</strong></div><div class="progress-track"><div id="barPellsKm" class="progress-fill"></div></div><p id="leftPellsKm" class="goal-left">Nastav si roční cíl</p></article>
+    <article class="goal-progress"><div class="goal-progress-top"><span>Kilometry · rotoped</span><strong id="doneRotopedKm">0 / 0 km</strong></div><div class="progress-track"><div id="barRotopedKm" class="progress-fill"></div></div><p id="leftRotopedKm" class="goal-left">Nastav si roční cíl</p></article>
+    <article class="goal-progress"><div class="goal-progress-top"><span>Nastoupáno</span><strong id="doneElevation">0 / 0 m</strong></div><div class="progress-track"><div id="barElevation" class="progress-fill"></div></div><p id="leftElevation" class="goal-left">Nastav si roční cíl</p></article>
+    <article class="goal-progress"><div class="goal-progress-top"><span>DPNK jízdy</span><strong id="doneDpnk">0 / 0 jízd</strong></div><div class="progress-track"><div id="barDpnk" class="progress-fill"></div></div><p id="leftDpnk" class="goal-left">Nastav si roční cíl</p></article>
+  </div><div class="profile-actions"><button type="submit" class="primary">Uložit cíle pro <span id="goalsSaveYear">2026</span></button><span class="hint" id="goalsStatus" role="status"></span></div></form>
+</section>
+<section class="panel add-panel" id="addRidePanel" hidden><button type="button" class="panel-close" id="closeAddPanel" aria-label="Zavřít panel přidání">×</button><h2>Přidat jízdu nebo importovat CSV</h2><p class="hint">Vyber jednu z možností níže. Import CSV přidá nové aktivity ze Stravy a přeskočí již evidované jízdy.</p><form id="newForm"><div class="form-grid">
+<div class="field"><label for="newDate">Datum *</label><input id="newDate" type="date" required></div><div class="field title-field"><label for="newTitle">Název / komentář *</label><input id="newTitle" required placeholder="Např. Morning Ride #DPNK"></div><div class="field"><label for="newDuration">Čas (hh:mm:ss nebo mm:ss) *</label><input id="newDuration" required placeholder="45:30"></div><div class="field"><label for="newDistance">Vzdálenost (km) *</label><input id="newDistance" required type="number" min="0" step="0.01"></div><div class="field"><label for="newElevation">Nastoupáno (m) *</label><input id="newElevation" required type="number" min="0" step="1" value="0"></div><div class="field"><label for="newEffort">Relativní úsilí</label><input id="newEffort" type="number" min="0" step="1" placeholder="volitelné"></div><div class="field"><label for="newBike">Kolo</label><select id="newBike"><option value="PELLS">Kolo: PELLS</option><option value="Rotoped">Kolo: rotoped</option></select></div><label class="checkfield"><input id="newDpnk" type="checkbox"> DPNK – cesta do práce</label><button class="primary" type="submit">Přidat záznam</button></div><div class="hint">U nového záznamu se DPNK automaticky předvybere, pokud název obsahuje DPNK nebo ZPNK. Typ kola se předvybere jako rotoped při 0 m nastoupaných.</div></form><div class="add-import-area"><h3>Import jízd ze Stravy</h3><p class="hint">Vyber soubor strava_activities_2025_2026.csv. Již importované jízdy se přeskočí podle ID Stravy nebo shody data a vzdálenosti.</p><button type="button" id="chooseStravaCsv" class="import-button">⬆ Vybrat CSV a importovat jízdy</button><input type="file" id="stravaCsv" accept=".csv,text/csv" hidden></div></section>
+<section class="panel monthly-overview" aria-label="Přehled jízd po měsících"><div class="monthly-heading"><div><h2>Jízdy podle měsíců <span id="monthlyYearLabel" class="monthly-year-label">ROK 2026</span></h2><p class="hint">Rychlý přehled kilometrů v aktuálně vybraném období a podle filtrů.</p></div><button type="button" id="visualizeFromOverview" class="secondary-button">Otevřít vizualizaci ↗</button></div><div id="monthlyBars" class="monthly-bars" aria-label="Kilometry po měsících"></div></section>
+<div class="table-wrap"><table><thead><tr><th class="nosort">#</th><th data-k="date">Datum ↕</th><th data-k="title">Název / komentář ↕</th><th data-k="duration_seconds">Čas ↕</th><th data-k="distance_km">Vzdálenost ↕</th><th data-k="elevation_m">Nastoupáno ↕</th><th data-k="relative_effort">Rel. úsilí ↕</th><th data-k="dpnk">DPNK? ↕</th><th data-k="bike_type">Kolo ↕</th></tr></thead><tbody id="body"></tbody></table></div><p class="footnote">Souhrn nahoře odpovídá jízdám po použití filtrů. Typ kola lze opravit přímo v tabulce.</p>
+</main>
+<div id="visualizationModal" class="visualization-modal" hidden role="dialog" aria-modal="true" aria-labelledby="visualizationTitle">
+  <div class="visualization-backdrop"></div>
+  <section class="visualization-dialog">
+    <button type="button" id="closeVisualization" class="modal-close" aria-label="Zavřít vizualizaci">×</button>
+    <h2 id="visualizationTitle">Vizualizace jízd</h2>
+    <p class="hint">Nastav období a výběr. Graf zobrazuje ujeté kilometry po jednotlivých měsících.</p>
+    <div class="visualization-filters">
+      <label>Datum od<input type="date" id="vizFrom"></label>
+      <label>Datum do<input type="date" id="vizTo"></label>
+      <label>Typ kola<select id="vizBike"><option value="">Vše</option><option value="PELLS">PELLS</option><option value="Rotoped">Rotoped</option></select></label>
+      <label>Jízdy<select id="vizDpnk"><option value="all">Všechny jízdy</option><option value="dpnk">Jen DPNK</option><option value="split">DPNK a ostatní rozděleně</option></select></label>
+      <button type="button" id="vizApply" class="primary">Aktualizovat graf</button>
+    </div>
+    <div class="chart-wrap"><canvas id="rideChart" width="1200" height="560" aria-label="Sloupcový graf ujetých kilometrů po měsících"></canvas></div>
+    <div class="chart-legend" id="chartLegend"></div>
+    <div class="modal-actions"><button type="button" id="copyChart" class="primary">▣ Kopírovat graf jako obrázek</button><span id="copyChartStatus" class="hint" role="status"></span></div>
+  </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/initial-data.js"></script>
-<script src="assets/js/app.js"></script>
+<script src="assets/js/app.js?v=20261017-9"></script>
 </body></html>

@@ -37,3 +37,170 @@ main{padding:16px 3%}
 @media(max-width:850px){.app-header{position:static}.topline{display:flex}.stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.app-header{padding:12px}.brand h1{font-size:20px}.app-logo{width:38px;height:38px}.year-switch{margin-top:14px}.year-switch .year-btn{flex:1}.stats-grid{gap:7px}.stat-card{padding:10px 8px}.stat-label,.stat-unit{font-size:10px}.stat-card strong{font-size:19px}.sync-panel{align-items:stretch}.sync-panel input{max-width:none;min-width:0;flex:1}.sync-status{width:100%}main{padding:12px}.panel.collapsible,.bulk-panel{padding-left:11px;padding-right:11px}}
 @media(max-width:380px){.brand h1{font-size:18px}.stats-grid{grid-template-columns:1fr}.stat-card{padding:12px}.stat-label,.stat-unit{font-size:12px}.stat-card strong{font-size:23px}}
+
+/* Profile and yearly goal tracking */
+.header-actions{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0}
+.profile-button{display:grid;place-items:center;width:46px;height:46px;padding:10px;border:1px solid #dce6df;border-radius:50%;background:#fff;color:#176b50}
+.profile-button:hover,.profile-button[aria-expanded="true"]{background:#e8f4ee;border-color:#8bbda7}
+.profile-button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.profile-panel[hidden]{display:none!important}.profile-panel{margin-bottom:14px}
+.profile-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}.profile-heading h2{margin:0 0 4px}.profile-heading .hint{margin:0}
+.profile-year{display:inline-flex;align-items:center;justify-content:center;min-width:64px;padding:7px 12px;border-radius:999px;background:#e5f2eb;color:#176b50;font-weight:750}
+.goal-inputs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}.goal-inputs .field span{font-size:12px;color:#52685d}.goal-inputs input{width:100%;min-width:0}
+.goal-progress-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.goal-progress{padding:14px;border:1px solid #e0e8e3;border-radius:11px;background:#fbfdfb;min-width:0}.goal-progress-top{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:10px}.goal-progress-top span{font-size:13px;color:#607168}.goal-progress-top strong{font-size:14px;text-align:right;overflow-wrap:anywhere}.progress-track{height:9px;border-radius:99px;background:#e4ebe6;overflow:hidden}.progress-fill{height:100%;width:0;background:#247454;border-radius:99px;transition:width .2s ease}.goal-left{margin:8px 0 0;font-size:12px;color:#65756c}.profile-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:700px){.goal-inputs,.goal-progress-grid{grid-template-columns:1fr}.goal-progress-top strong{font-size:13px}.profile-heading{align-items:center}}
+
+/* 2026-10-17: date presets and filter-aware split summary */
+.topline{align-items:center}.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:0;max-width:760px}.stat-card{padding:8px 10px;border-radius:9px;gap:2px}.stat-card strong{font-size:clamp(16px,1.7vw,21px)}.stat-label,.stat-unit{font-size:11px}.stat-pells{border-left:3px solid #176b50}.stat-trainer{border-left:3px solid #8c9ca6}.year-presets{display:flex;align-items:center;gap:6px;flex-wrap:wrap;width:100%;margin-bottom:3px}.year-presets .year-btn{padding:6px 10px;font-size:12px}.year-presets .year-btn.active{background:#176b50;color:#fff;border-color:#176b50}.stats-grid{flex:1}
+@media(max-width:900px){.topline{align-items:flex-start;flex-wrap:wrap}.stats-grid{width:100%;max-width:none;order:3}.brand{flex:1}.header-actions{flex-direction:row}.stat-card{min-width:0}}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-card strong{font-size:19px}.year-presets{width:100%}}
+
+/* Compact header and sync via icon */
+.topline{align-items:center;gap:10px}.brand{flex:0 0 auto}.stats-grid{flex:1;max-width:760px;margin:0;grid-template-columns:repeat(4,minmax(90px,1fr));gap:6px}.stat-card{padding:7px 9px;gap:1px}.stat-card strong{font-size:clamp(15px,1.5vw,20px)}.stat-label,.stat-unit{font-size:10px}.header-actions{display:flex;align-items:center;gap:7px;flex-shrink:0}.icon-button,.profile-button{display:grid;place-items:center;width:42px;height:42px;padding:8px;border-radius:50%;border:1px solid #d9e2e8;background:#fff;color:#176b50}.icon-button svg,.profile-button svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.sync-collapsible{max-width:100%}.sync-collapsible:not([open]){display:none}.import-label{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}.import-label input{max-width:260px;font-size:12px}@media(max-width:1000px){.topline{flex-wrap:wrap}.stats-grid{order:3;flex-basis:100%;max-width:none}.header-actions{margin-left:auto}}@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));order:2}.header-actions{order:1}.brand{order:0}.app-header{padding:9px 12px}.stat-card strong{font-size:18px}.icon-button,.profile-button{width:38px;height:38px}.sync-collapsible[open]{display:block}}
+
+
+/* 2026-10-17: less clutter, one summary, explicit sync icon and compact table */
+.cards{display:none!important}
+.app-header{padding:8px 2% 9px}
+.topline{align-items:center;gap:12px}
+.brand h1{margin:0;font-size:clamp(19px,2vw,25px)}
+.app-logo{width:38px;height:38px}
+.stats-grid{max-width:700px;grid-template-columns:repeat(4,minmax(80px,1fr));gap:5px}
+.stat-card{padding:6px 8px;box-shadow:none}
+.stat-card strong{font-size:clamp(14px,1.35vw,18px)}
+.header-actions{flex-direction:row;gap:6px}
+.icon-button{display:grid!important;visibility:visible!important;opacity:1!important}
+.panel.collapsible:not([open]){display:block}
+.sync-collapsible:not([open]){display:none!important}
+.panel.collapsible>summary{padding:8px 0}
+.hint{margin:5px 0 0}
+main{padding:10px 2%}
+.table-wrap{max-height:calc(100vh - 205px)}
+.import-button{background:#e8f4ee;border:1px solid #9fcab5;border-radius:7px;padding:8px 11px;color:#14583f;font-weight:650;cursor:pointer}
+.import-button input{max-width:220px}
+@media(max-width:900px){.topline{flex-wrap:wrap}.stats-grid{order:3;flex-basis:100%;max-width:none}.header-actions{margin-left:auto}.table-wrap{max-height:none}}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));order:2}.header-actions{order:1}.brand{order:0}.app-header{padding:8px 10px}.stat-card strong{font-size:17px}.table-wrap{max-height:none}}
+
+/* Fix 2026-10-17: explicit Strava import action, compact header and only one summary */
+.cards{display:none!important}
+#chooseStravaCsv{display:inline-flex!important;align-items:center;gap:6px;background:#176b50;color:#fff;border:1px solid #176b50;border-radius:8px;padding:9px 13px;font-weight:700;cursor:pointer}
+#chooseStravaCsv:hover{background:#12553f}
+#stravaCsv[hidden]{display:none!important}
+.sync-collapsible:not([open]){display:none!important}
+.topline{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px}
+.stats-grid{width:100%;max-width:none;min-width:0;grid-template-columns:repeat(4,minmax(0,1fr));margin:0}
+.header-actions{display:flex;flex-direction:row;align-items:center;gap:7px}
+@media(max-width:1000px){.topline{display:flex;flex-wrap:wrap}.brand{flex:1}.header-actions{margin-left:auto}.stats-grid{order:3;flex-basis:100%}}
+
+/* Verified cleanup: closed panels stay collapsed; sync only from cloud icon; import is inside + panel. */
+details.panel.collapsible:not([open]) > :not(summary){display:none!important}
+#syncPanel:not([open]){display:none!important}
+#addRidePanel[hidden],#profilePanel[hidden]{display:none!important}
+.add-import-area{border-top:1px solid #e0e8e3;margin-top:16px;padding-top:12px}
+.add-import-area h3{margin:0 0 5px;font-size:16px}
+#chooseStravaCsv{display:inline-flex!important;align-items:center;gap:6px;background:#176b50;color:white;border:1px solid #176b50;border-radius:8px;padding:9px 13px;font-weight:700;cursor:pointer}
+#stravaCsv[hidden]{display:none!important}
+
+/* Final usability corrections 2026-10-17 */
+#addRidePanel[hidden],#profilePanel[hidden]{display:none!important}
+#syncPanel:not([open]){display:none!important}
+#addRidePanel{border:2px solid #176b50;box-shadow:0 4px 18px #176b5018}
+#addRidePanel h2{font-size:20px}
+.add-import-area{background:#f3faf6;border-radius:10px;padding:14px;margin-top:18px}
+.add-import-area .hint{font-size:13px}
+.year-presets{margin-top:6px}
+@media(min-width:901px){.table-wrap{max-height:calc(100vh - 240px)}}
+
+
+/* Final layout: one filter system, compact single-line summary on desktop */
+.stats-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;flex:1 1 520px!important;max-width:760px!important;margin:0!important}
+.stat-card{min-width:0!important;padding:7px 9px!important}
+.topline{align-items:center!important;gap:12px!important}
+.header-actions{flex-direction:row!important;align-items:center!important;gap:7px!important}
+.filter-row{display:none!important}
+#exportToggleButton svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:900px){.topline{flex-wrap:wrap!important}.stats-grid{order:3;flex:1 0 100%!important;max-width:none!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}.header-actions{margin-left:auto}}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;order:2}.header-actions{order:1}.brand{order:0}.stat-card strong{font-size:17px!important}}
+
+/* Final simplified layout */
+.filter-row{display:none!important}
+.bulk-panel,#bulkPanel,[id*=bulk],.bulk{display:none!important}
+.filters-panel{margin-top:12px;margin-bottom:10px;padding:10px 12px}
+.filters-panel .filters{margin-top:0;gap:7px}
+.filters-panel .year-presets{width:auto;margin:0 8px 0 0}
+.filters-panel label.small{display:flex;align-items:center;gap:5px}
+.filters-panel input[type=date]{width:145px}
+.filters-panel #q{min-width:190px;flex:1}
+.export-menu{display:flex;gap:8px;align-items:center;padding:10px;margin:0 0 10px}
+.export-menu[hidden]{display:none!important}
+.action-wrap{display:contents}
+.add-panel{border:2px solid #176b50}
+.sync-collapsible:not([open]){display:none!important}
+.stats-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;flex:1 1 520px!important}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.filters-panel .filters{align-items:stretch}.filters-panel .year-presets{width:100%}.filters-panel input[type=date]{width:100%}}
+
+/* Fix: filters are a normal section, not a <details>; never hide their contents based on [open]. */
+#filtersPanel{display:block!important}
+#filtersPanel > .filters{display:flex!important}
+
+/* + menu: visible, accessible action choices */
+.add-action-wrap{position:relative!important;display:inline-flex!important}
+.add-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:20;display:flex;flex-direction:column;gap:5px;min-width:260px;padding:8px;background:#fff;border:1px solid #d7e2dc;border-radius:10px;box-shadow:0 8px 24px #0002}
+.add-menu button{text-align:left;white-space:nowrap;padding:10px 12px}
+.add-menu[hidden]{display:none!important}
+
+/* Reliability fixes 2026-10-17: visible interactive + menu and date filters */
+.app-header{overflow:visible!important}
+.add-action-wrap{position:relative!important;display:inline-flex!important;z-index:1000!important}
+#addRideButton{position:relative;z-index:1001;pointer-events:auto!important}
+#addRideMenu:not([hidden]){display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;position:absolute!important;top:calc(100% + 8px)!important;right:0!important;z-index:1002!important}
+#addRideMenu[hidden]{display:none!important}
+#filtersPanel{display:block!important;visibility:visible!important}
+#filtersPanel .year-presets,#filtersPanel #from,#filtersPanel #to{visibility:visible!important;display:initial}
+#filtersPanel .year-presets{display:flex!important}
+#filtersPanel label.small{display:flex!important;align-items:center;gap:5px}
+#filtersPanel input[type=date]{min-width:145px;width:145px}
+@media(max-width:600px){#filtersPanel input[type=date]{width:100%;min-width:0}}
+
+
+/* Monthly ride overview and chart modal */
+#visualizeButton svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.add-panel,.monthly-overview{position:relative}
+.panel-close,.modal-close{position:absolute;top:9px;right:10px;border:0;background:#eef3f0;border-radius:50%;width:34px;height:34px;padding:0;font-size:25px;line-height:1;color:#33463c;display:grid;place-items:center}
+#addRidePanel h2{padding-right:45px}
+.menu-close{border-top:1px solid #e7ece9!important;color:#52645a!important;text-align:center!important;background:#f7faf8!important}
+.monthly-overview{padding:12px 15px}
+.monthly-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.monthly-heading h2{margin:0 0 2px}
+.monthly-heading .hint{margin:0}
+.secondary-button{white-space:nowrap;background:#f3faf6;border-color:#b7d9c8;color:#176b50}
+.monthly-bars{display:grid;grid-template-columns:repeat(12,minmax(24px,1fr));gap:8px;align-items:end;min-height:135px;padding:6px 2px 0}
+.month-bar-item{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;font-size:11px;color:#65716a}
+.month-bar-item strong{font-size:11px;color:#263b31;font-weight:600}
+.month-bar-track{height:76px;width:min(100%,34px);display:flex;align-items:end;background:#f0f4f1;border-radius:5px 5px 2px 2px;overflow:hidden}
+.month-bar-fill{width:100%;background:linear-gradient(180deg,#55a987,#176b50);border-radius:5px 5px 0 0;min-height:0}
+.visualization-modal[hidden]{display:none!important}
+.visualization-modal{position:fixed;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;padding:18px}
+.visualization-backdrop{position:absolute;inset:0;background:rgba(12,24,19,.62);backdrop-filter:blur(2px)}
+.visualization-dialog{position:relative;z-index:1;background:#fff;width:min(1180px,100%);max-height:94vh;overflow:auto;border-radius:16px;padding:24px;box-shadow:0 20px 70px #0005}
+.visualization-dialog h2{margin:0 50px 6px 0;font-size:23px}
+.visualization-dialog>.hint{margin:0 0 16px;font-size:13px}
+.visualization-filters{display:flex;align-items:end;gap:10px;flex-wrap:wrap;padding:12px;background:#f5f8f6;border:1px solid #e0e9e3;border-radius:10px}
+.visualization-filters label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#52645a}
+.visualization-filters input,.visualization-filters select{min-width:140px}
+.chart-wrap{width:100%;overflow-x:auto;margin-top:16px;border:1px solid #e4ebe6;border-radius:10px}
+#rideChart{display:block;width:100%;min-width:680px;height:auto}
+.chart-legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-size:13px;color:#52645a}
+.chart-legend span{display:inline-flex;align-items:center;gap:6px}
+.chart-legend i{display:inline-block;width:13px;height:13px;border-radius:3px}
+.modal-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+.modal-actions .hint{margin:0}
+@media(max-width:650px){.monthly-heading{align-items:flex-start;flex-direction:column}.monthly-bars{gap:3px;min-height:115px}.month-bar-track{height:60px}.month-bar-item strong{font-size:9px}.month-bar-item span{font-size:10px}.visualization-modal{padding:7px}.visualization-dialog{padding:16px 11px;border-radius:12px;max-height:97vh}.visualization-filters{align-items:stretch}.visualization-filters label,.visualization-filters input,.visualization-filters select{width:100%;min-width:0}.modal-close{top:8px;right:8px}}
+
+/* Monthly overview: PELLS green, brighter rotoped gold, selected year */
+.month-bar-track{flex-direction:column;justify-content:flex-end}
+.month-bar-fill{flex:0 0 auto;min-height:0;border-radius:0;width:100%}
+.month-bar-pells{background:linear-gradient(180deg,#55a987,#176b50)}
+.month-bar-rotoped{background:linear-gradient(180deg,#ffe477,#f4c542)}
+.monthly-year-label{display:inline-block;margin-left:7px;padding:3px 8px;border-radius:999px;background:#e5f2eb;color:#176b50;font-size:11px;font-weight:750;vertical-align:middle}
+.monthly-year-label[hidden]{display:none}

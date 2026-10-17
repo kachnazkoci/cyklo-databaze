@@ -1,0 +1,29 @@
+warning: LF will be replaced by CRLF in ASSETS/css/style.css.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in ASSETS/js/app.js.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in ASSETS/js/config.js.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in ASSETS/js/initial-data.js.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in DOCS/NASTAVENI_CLOUD.md.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in DOCS/nastaveni_cloud.sql.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in NASTAVENI_CLOUD.md.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in README.md.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in index.html.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in manifest.webmanifest.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in sw.js.
+The file will have its original line endings in your working directory
+ ASSETS/css/style.css      | 167 [32m++++++++++++++++++++++++++++++++++++++++++++++[m
+ ASSETS/js/app.js          | 142 [32m++++++++++++++++++++++++++++++[m[31m---------[m
+ ASSETS/js/initial-data.js |   4 [32m+[m[31m-[m
+ README.md                 |  53 [32m++++++++++++++[m[31m-[m
+ index.html                | 119 [32m++++++++++++++++++++[m[31m-------------[m
+ sw.js                     |  77 [32m++++++++++++++[m[31m-------[m
+ 6 files changed, 458 insertions(+), 104 deletions(-)
