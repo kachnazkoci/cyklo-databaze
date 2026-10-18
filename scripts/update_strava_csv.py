@@ -27,8 +27,18 @@ rows, page = [], 1
 while True:
     response = requests.get('https://www.strava.com/api/v3/athlete/activities', headers=headers,
         params={'after': after, 'before': before, 'page': page, 'per_page': 200}, timeout=30)
+    if not response.ok:
+    print("Chyba při stahování aktivit:")
+    print("HTTP:", response.status_code)
+    try:
+        error = response.json()
+        print("Zpráva:", error.get("message", ""))
+        print("Podrobnosti:", error.get("errors", []))
+    except ValueError:
+        print("Odpověď není ve formátu JSON.")
     response.raise_for_status()
-    batch = response.json()
+
+batch = response.json()
     if not batch:
         break
     for activity in batch:
