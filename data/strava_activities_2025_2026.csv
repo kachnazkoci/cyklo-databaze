@@ -1,4 +1,5 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
+20650062576,2026-10-19T19:12:46Z,Večerní chůze,Walk,Walk,0.024,0,395,395,True,False,True,,,https://www.strava.com/activities/20650062576
 20644159603,2026-10-19T08:49:42Z,Duolingo a telefon a věšení prádla,Walk,Walk,1.801,0.0,3085,4301,False,False,True,,,https://www.strava.com/activities/20644159603
 20642771937,2026-10-19T05:33:59Z,Ranní chůze,Walk,Walk,1.798,6.4,2581,3506,False,False,True,,,https://www.strava.com/activities/20642771937
 20630123099,2026-10-18T07:21:48Z,Ranní chůze,Walk,Walk,2.97,2.6,3897,5810,False,False,False,,,https://www.strava.com/activities/20630123099
