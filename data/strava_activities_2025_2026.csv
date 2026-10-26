@@ -1,5 +1,7 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
-20736224121,2026-10-26T12:08:29Z,Polední chůze,Walk,Walk,1.276,2.8,1619,1970,False,False,True,,,https://www.strava.com/activities/20736224121
+20737654162,2026-10-26T14:34:16Z,Kadeřnice,Walk,Walk,1.18,0.0,895,987,False,True,False,,,https://www.strava.com/activities/20737654162
+20737274363,2026-10-26T14:01:36Z,Na bus,Walk,Walk,1.427,3.3,845,845,False,True,False,,,https://www.strava.com/activities/20737274363
+20736224121,2026-10-26T12:08:29Z,Aby Rocky neřekl,Walk,Walk,1.276,2.8,1619,1970,False,False,False,,,https://www.strava.com/activities/20736224121
 20734180728,2026-10-26T07:58:17Z,Ranní chůze,Walk,Walk,2.639,20.7,3163,3525,False,False,False,,,https://www.strava.com/activities/20734180728
 20730729129,2026-10-25T20:56:12Z,Večerní chůze,Walk,Walk,0.871,2.6,1297,1604,False,False,True,,,https://www.strava.com/activities/20730729129
 20727244559,2026-10-25T15:03:42Z,Odpolední chůze,Walk,Walk,1.875,3.3,2657,3495,False,False,True,,,https://www.strava.com/activities/20727244559
