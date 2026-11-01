@@ -1,4 +1,6 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
+20820347742,2026-11-01T17:31:06Z,Odpolední chůze,Walk,Walk,1.455,3.5,1512,1635,False,False,True,,,https://www.strava.com/activities/20820347742
+20818906637,2026-11-01T14:43:17Z,Odpolední chůze,Walk,Walk,3.422,10.1,4250,5241,False,False,True,,,https://www.strava.com/activities/20818906637
 20807374983,2026-10-31T18:03:45Z,Večerní posilování,WeightTraining,WeightTraining,0.0,0,649,649,True,False,True,,,https://www.strava.com/activities/20807374983
 20807187200,2026-10-31T17:37:39Z,Odpolední chůze,Walk,Walk,1.175,2.6,1252,1372,False,False,True,,,https://www.strava.com/activities/20807187200
 20805818307,2026-10-31T15:27:03Z,Odpolední chůze,Walk,Walk,1.695,3.4,1749,3348,False,False,True,,,https://www.strava.com/activities/20805818307
