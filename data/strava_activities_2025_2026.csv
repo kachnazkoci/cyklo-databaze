@@ -1,4 +1,7 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
+20885137059,2026-11-06T17:40:31Z,"Spadané listí, Rocky a kupa hvězd!",Walk,Walk,2.213,5.0,2733,3047,False,False,False,,,https://www.strava.com/activities/20885137059
+20883966719,2026-11-06T16:01:20Z,Odpolední chůze,Walk,Walk,2.307,3.8,2447,2756,False,False,False,,,https://www.strava.com/activities/20883966719
+20882183856,2026-11-06T12:07:29Z,Polední chůze,Walk,Walk,3.252,18.4,3924,5767,False,False,False,,,https://www.strava.com/activities/20882183856
 20878766892,2026-11-06T05:39:03Z,Ranní chůze,Walk,Walk,2.773,10.2,3049,3612,False,False,False,,,https://www.strava.com/activities/20878766892
 20874308845,2026-11-05T20:42:33Z,Večerní posilování,WeightTraining,WeightTraining,0.0,0,349,349,True,False,True,,,https://www.strava.com/activities/20874308845
 20874104172,2026-11-05T19:35:40Z,Večerní chůze,Walk,Walk,1.592,3.3,1790,3200,False,False,False,,,https://www.strava.com/activities/20874104172
