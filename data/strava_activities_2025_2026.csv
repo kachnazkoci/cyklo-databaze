@@ -1,7 +1,8 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
-20908421869,2026-11-08T12:52:52Z,Polední chůze,Walk,Walk,3.038,27.7,3717,4815,False,False,True,,,https://www.strava.com/activities/20908421869
+20912295885,2026-11-08T18:30:04Z,Večerní chůze,Walk,Walk,1.467,6.0,1553,1978,False,False,False,,,https://www.strava.com/activities/20912295885
+20908421869,2026-11-08T12:52:52Z,Polední chůze,Walk,Walk,3.038,27.7,3717,4815,False,False,False,,,https://www.strava.com/activities/20908421869
 20903685607,2026-11-08T07:40:51Z,Ranní chůze,Walk,Walk,2.421,17.6,2699,2878,False,False,False,,,https://www.strava.com/activities/20903685607
-20903285722,2026-11-08T06:20:00Z,Pomalu ale jistě🤩🤍🍀,Ride,Ride,5.0,0,763,763,False,False,True,b18354841,,https://www.strava.com/activities/20903285722
+20903285722,2026-11-08T06:20:00Z,Pomalu ale jistě🤩🤍🍀,Ride,Ride,5.0,0,763,763,False,False,False,b18354841,,https://www.strava.com/activities/20903285722
 20898749683,2026-11-07T18:18:56Z,Večerní chůze,Walk,Walk,1.404,2.8,1502,2521,False,False,False,,,https://www.strava.com/activities/20898749683
 20894993523,2026-11-07T13:24:19Z,Odpolední chůze,Walk,Walk,1.835,2.9,2764,3165,False,False,True,,,https://www.strava.com/activities/20894993523
 20890805082,2026-11-07T07:16:49Z,Ranní chůze,Walk,Walk,2.786,5.7,3600,5022,False,False,False,,,https://www.strava.com/activities/20890805082
