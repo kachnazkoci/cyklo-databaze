@@ -1,6 +1,6 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
 20975769882,2026-11-13T20:42:59Z,Večerní posilování,WeightTraining,WeightTraining,0.0,0,147,147,True,False,True,,,https://www.strava.com/activities/20975769882
-20975481724,2026-11-13T19:46:17Z,Večerní chůze,Walk,Walk,1.056,3.8,1029,1447,False,False,True,,,https://www.strava.com/activities/20975481724
+20975481724,2026-11-13T19:46:17Z,Večerní chůze,Walk,Walk,1.056,3.8,1029,1447,False,False,False,,,https://www.strava.com/activities/20975481724
 20973937940,2026-11-13T17:01:11Z,#Rocky,Walk,Walk,1.993,7.4,1584,2014,False,False,False,,,https://www.strava.com/activities/20973937940
 20968102995,2026-11-13T06:27:06Z,#NachArbeit #zuFuß,Walk,Walk,1.529,9.9,1105,1261,False,True,False,,,https://www.strava.com/activities/20968102995
 20967843615,2026-11-13T04:54:46Z,Rocky a směr bus,Walk,Walk,2.566,5.8,2508,2768,False,True,False,,,https://www.strava.com/activities/20967843615
