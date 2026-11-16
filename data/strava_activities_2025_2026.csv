@@ -1,4 +1,8 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
+21011422958,2026-11-16T17:38:26Z,Odpolední chůze,Walk,Walk,2.367,4.9,3088,4228,False,False,False,,,https://www.strava.com/activities/21011422958
+21009476700,2026-11-16T13:59:53Z,Prázdný rybníky a duše,Ride,Ride,24.256,205.5,5684,6763,False,False,False,b18354841,,https://www.strava.com/activities/21009476700
+21008200162,2026-11-16T12:38:16Z,Polední chůze,Walk,Walk,2.655,36.8,3380,4067,False,False,True,,,https://www.strava.com/activities/21008200162
+21005448893,2026-11-16T07:23:24Z,Ranní chůze,Walk,Walk,2.812,11.0,3453,4023,False,False,False,,,https://www.strava.com/activities/21005448893
 21000477178,2026-11-15T18:11:48Z,Večerní posilování,WeightTraining,WeightTraining,0.0,0,272,272,True,False,True,,,https://www.strava.com/activities/21000477178
 21000349958,2026-11-15T17:09:47Z,Odpolední chůze,Walk,Walk,2.357,8.5,2808,3302,False,False,False,,,https://www.strava.com/activities/21000349958
 20997601683,2026-11-15T13:29:59Z,Odpolední chůze,Walk,Walk,2.45,6.2,2762,3245,False,False,False,,,https://www.strava.com/activities/20997601683
