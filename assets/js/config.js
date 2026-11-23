@@ -1,3 +1,3 @@
 // Po vytvoření Supabase projektu doplň Project URL a anon/publishable key. Tento klíč je určený pro klientskou aplikaci; bezpečnost zajišťují RLS pravidla v SQL.
-window.CYKLO_SUPABASE_URL = 'https://DOPLNIT.supabase.co';
-window.CYKLO_SUPABASE_ANON_KEY = 'DOPLNIT_ANON_NEBO_PUBLISHABLE_KEY';
+window.CYKLO_SUPABASE_URL = 'https://oncbgmyqrxywszilaldc.supabase.co';
+window.CYKLO_SUPABASE_ANON_KEY = 'sb_publishable_jv-OF-c0ovZPmNw9maQ3rA_yZLLL1PK';
