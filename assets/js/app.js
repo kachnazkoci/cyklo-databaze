@@ -114,8 +114,137 @@ async function importStravaCsvText(text,sourceLabel='CSV'){
 $('stravaCsv').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const result=await importStravaCsvText(await file.text(),file.name);alert(`Import dokončen. Přidáno ${result.added} jízd, propojeno s existujícími záznamy ${result.matched}, přeskočeno ${result.skipped} aktivit jiných sportů nebo již importovaných.`)}catch(err){alert('CSV se nepodařilo importovat: '+err.message)}finally{e.target.value=''}});
 // On GitHub Pages, merge the latest CSV periodically published by GitHub Actions.
 // Local file:// preview cannot fetch same-origin CSV, so manual import remains available there.
-async function refreshStravaFeed(){if(!/^https?:$/.test(location.protocol))return;try{const r=await fetch('./data/strava_activities_2025_2026.csv?updated='+Date.now(),{cache:'no-store'});if(!r.ok)return;const result=await importStravaCsvText(await r.text(),'automatický zdroj');if(result.added)console.info(`Automaticky doplněno ${result.added} jízd ze Stravy.`)}catch(e){console.warn('Automatické načtení Strava CSV se nepodařilo; lokální data zůstávají zachována.',e)}}
+async function refreshStravaFeed(){
+  if(!/^https?:$/.test(location.protocol)) return;
 
+  if(
+    !window.supabase ||
+    !window.CYKLO_SUPABASE_URL ||
+    !window.CYKLO_SUPABASE_ANON_KEY ||
+    window.CYKLO_SUPABASE_ANON_KEY.includes('DOPLNIT')
+  ){
+    console.warn('Supabase pro Strava feed není nakonfigurován.');
+    return;
+  }
+
+  try{
+    const client = window.supabase.createClient(
+      window.CYKLO_SUPABASE_URL,
+      window.CYKLO_SUPABASE_ANON_KEY
+    );
+
+    const { data, error } = await client
+      .from('strava_activities')
+      .select('*')
+      .order('date_local', { ascending: false });
+
+    if(error) throw error;
+
+    if(!Array.isArray(data)){
+      console.warn('Supabase nevrátil seznam Strava aktivit.');
+      return;
+    }
+
+    const existingByStravaId = new Map(
+      DATA
+        .filter(x => x.strava_id)
+        .map(x => [String(x.strava_id), x])
+    );
+
+    let added = 0;
+    let updated = 0;
+
+    for(const r of data){
+
+      const sid = String(r.strava_id || '');
+      if(!sid) continue;
+
+      const existing = existingByStravaId.get(sid);
+
+      const title = String(r.name || 'Jízda ze Stravy');
+      const sportType = String(
+        r.sport_type || r.type || ''
+      ).toLowerCase();
+
+      const durationSeconds =
+        Number(r.moving_time_seconds || 0);
+
+      const automaticBikeType =
+        String(r.trainer).toLowerCase() === 'true' ||
+        sportType === 'virtualride'
+          ? 'Rotoped'
+          : 'PELLS';
+
+      const automaticDpnk =
+        /DPNK|ZPNK/i.test(title);
+
+      if(existing){
+
+        // Aktualizujeme pouze údaje pocházející ze Stravy.
+        // Ruční DPNK a typ kola zachováváme.
+        existing.date = String(r.date_local || '').slice(0,10);
+        existing.title = title;
+        existing.duration = fmtTime(durationSeconds);
+        existing.duration_seconds = durationSeconds;
+        existing.distance_km = Number(r.distance_km || 0);
+        existing.elevation_m = Number(r.elevation_m || 0);
+        existing.strava_id = sid;
+
+        if(existing.dpnk === undefined){
+          existing.dpnk = automaticDpnk;
+        }
+
+        if(!existing.bike_type){
+          existing.bike_type = automaticBikeType;
+        }
+
+        updated++;
+
+      }else{
+
+        const id =
+          DATA.reduce(
+            (m,x) => Math.max(m, Number(x.id) || 0),
+            0
+          ) + 1;
+
+        DATA.push({
+          id,
+          date: String(r.date_local || '').slice(0,10),
+          title,
+          duration: fmtTime(durationSeconds),
+          duration_seconds: durationSeconds,
+          distance_km: Number(r.distance_km || 0),
+          elevation_m: Number(r.elevation_m || 0),
+          relative_effort: null,
+          dpnk: automaticDpnk,
+          bike_type: automaticBikeType,
+          strava_id: sid
+        });
+
+        existingByStravaId.set(sid, DATA[DATA.length - 1]);
+        added++;
+      }
+    }
+
+    if(added || updated){
+      save();
+      render();
+    }
+
+    console.info(
+      `Supabase Strava feed: načteno ${data.length} aktivit, ` +
+      `přidáno ${added}, aktualizováno ${updated}.`
+    );
+
+  }catch(e){
+    console.warn(
+      'Načtení Strava aktivit ze Supabase se nepodařilo; ' +
+      'lokální data zůstávají zachována.',
+      e
+    );
+  }
+}
 // Cloud sync: Supabase Auth + one JSON snapshot per signed-in user. Local storage remains the offline cache.
 let cloudClient=null, cloudUser=null, cloudReady=false, applyingCloud=false, cloudTimer=null;
 const syncStatus=$('syncStatus');
