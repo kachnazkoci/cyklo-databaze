@@ -145,6 +145,34 @@ async function refreshStravaFeed(){
       return;
     }
 
+    // Aktuální ID aktivit, které skutečně existují v Supabase.
+    const supabaseIds = new Set(
+      data
+        .map(r => String(r.strava_id || ''))
+        .filter(Boolean)
+    );
+
+    /*
+     * Odstraníme pouze staré záznamy pocházející ze Stravy,
+     * které už v Supabase nejsou.
+     *
+     * Ruční záznamy bez strava_id zůstanou zachované.
+     */
+    const beforeCount = DATA.length;
+
+    DATA = DATA.filter(x => {
+      const sid = String(x.strava_id || '');
+
+      // Ruční záznam – ponechat.
+      if(!sid) return true;
+
+      // Strava záznam – ponechat pouze pokud stále existuje v Supabase.
+      return supabaseIds.has(sid);
+    });
+
+    const removed = beforeCount - DATA.length;
+
+    // Znovu vytvoříme mapu aktuálních Strava záznamů.
     const existingByStravaId = new Map(
       DATA
         .filter(x => x.strava_id)
@@ -162,6 +190,7 @@ async function refreshStravaFeed(){
       const existing = existingByStravaId.get(sid);
 
       const title = String(r.name || 'Jízda ze Stravy');
+
       const sportType = String(
         r.sport_type || r.type || ''
       ).toLowerCase();
@@ -180,7 +209,7 @@ async function refreshStravaFeed(){
 
       if(existing){
 
-        // Aktualizujeme pouze údaje pocházející ze Stravy.
+        // Aktualizujeme údaje pocházející ze Stravy.
         // Ruční DPNK a typ kola zachováváme.
         existing.date = String(r.date_local || '').slice(0,10);
         existing.title = title;
@@ -208,7 +237,7 @@ async function refreshStravaFeed(){
             0
           ) + 1;
 
-        DATA.push({
+        const newRow = {
           id,
           date: String(r.date_local || '').slice(0,10),
           title,
@@ -220,21 +249,25 @@ async function refreshStravaFeed(){
           dpnk: automaticDpnk,
           bike_type: automaticBikeType,
           strava_id: sid
-        });
+        };
 
-        existingByStravaId.set(sid, DATA[DATA.length - 1]);
+        DATA.push(newRow);
+        existingByStravaId.set(sid, newRow);
         added++;
       }
     }
 
-    if(added || updated){
-      save();
-      render();
-    }
+    /*
+     * Uložíme výsledný stav do localStorage.
+     * Tím se odstraní staré Strava aktivity i z lokální kopie.
+     */
+    save();
+    render();
 
     console.info(
       `Supabase Strava feed: načteno ${data.length} aktivit, ` +
-      `přidáno ${added}, aktualizováno ${updated}.`
+      `přidáno ${added}, aktualizováno ${updated}, ` +
+      `odstraněno ${removed} starých aktivit.`
     );
 
   }catch(e){
