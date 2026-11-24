@@ -1,4 +1,5 @@
 ﻿strava_id,date_local,name,type,sport_type,distance_km,elevation_m,moving_time_seconds,elapsed_time_seconds,trainer,commute,private,gear_id,description,url
+21103381422,2026-11-24T06:28:18Z,#DPNK #vítrTrenér,Ride,Ride,14.03,60.1,2827,2827,False,True,False,b18354841,,https://www.strava.com/activities/21103381422
 21084866549,2026-11-22T13:32:18Z,Odpolední jízda,Ride,Ride,40.1,465.0,8127,8460,False,False,False,b18354841,,https://www.strava.com/activities/21084866549
 21066270390,2026-11-21T05:35:49Z,Ranní jízda,Ride,Ride,27.167,137.1,5736,6537,False,True,False,b18354841,,https://www.strava.com/activities/21066270390
 21009476700,2026-11-16T13:59:53Z,Prázdný rybníky a duše,Ride,Ride,24.256,205.5,5684,6763,False,False,False,b18354841,,https://www.strava.com/activities/21009476700
